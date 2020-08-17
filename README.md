@@ -14,7 +14,7 @@ It was originally based on [receipt-parser](https://github.com/mre/receipt-parse
 but has effectively been completely rewritten/replaced.
 
 So far, only German receipts are supported, but other countries can
-be added using a simple [YAML configuration file](data/configs/germany.yml).
+be added using a simple [YAML configuration file](receiptparser/data/configs/germany.yml).
 
 ## Installation
 

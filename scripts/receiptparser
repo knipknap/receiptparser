@@ -5,14 +5,10 @@ import argparse
 import codecs
 import pytesseract
 from collections import defaultdict
-from receiptparser.config import read_config
+import receiptparser
+from receiptparser.config import read_config, CONFIG_DIR
 from receiptparser.util import find_images
 from receiptparser.parser import process_receipt
-
-DIRNAME = os.path.dirname(os.path.abspath(__file__))
-ROOT_DIR = os.path.dirname(DIRNAME)
-DATA_DIR = os.path.join(ROOT_DIR, 'data')
-CONFIGS_DIR = os.path.join(DATA_DIR, 'configs')
 
 def print_stats(receipts, verbosity=2):
     stats = defaultdict(int)
@@ -54,7 +50,7 @@ options = parser.parse_args()
 
 # Read the config file.
 if not options.config_file:
-    options.config_file = os.path.join(CONFIGS_DIR, options.config+'.yml')
+    options.config_file = os.path.join(CONFIG_DIR, options.config+'.yml')
 if not os.path.isfile(options.config_file):
     parser.error("config file not found: "+options.config_file)
 

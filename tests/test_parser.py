@@ -17,11 +17,10 @@
 
 import os
 import unittest
-from receiptparser.config import read_config
+from receiptparser.config import read_config, CONFIG_DIR
 from receiptparser.receipt import Receipt
 
 DIRNAME = os.path.dirname(os.path.abspath(__file__))
-ROOT_DIR = os.path.dirname(DIRNAME)
 TEST_DATA_DIR = os.path.join(DIRNAME, 'data')
 TEST_RECEIPTS_TXT_DIR = os.path.join(TEST_DATA_DIR, 'germany', 'txt')
 
@@ -29,7 +28,7 @@ TEST_RECEIPTS_TXT_DIR = os.path.join(TEST_DATA_DIR, 'germany', 'txt')
 class ReceiptTestCase(unittest.TestCase):
     """Tests for `parser.py`."""
 
-    config = read_config(os.path.join(ROOT_DIR, "data", "configs", "germany.yml"))
+    config = read_config(os.path.join(CONFIG_DIR, "germany.yml"))
 
     def test_fuzzy_find(self):
         """

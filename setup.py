@@ -5,22 +5,20 @@ sys.path.insert(0, 'receiptparser')
 from version import __version__
 
 # Import the project description from the README.
-descr = '''
-Use OCR to parse an image of a receipt or bill, and use fuzzy matching to
-extract information like the dollar (or Euro) amount, the company name,
-the date and the postal code.
-'''.strip()
+with open("README.md") as fp:
+    descr = fp.read()
 
 # Run the setup.
 setup(name             = 'receiptparser',
       version          = __version__,
       description      = 'Receipt and bill parser using OCR',
       long_description = descr,
+      long_description_content_type='text/markdown',
       author           = 'Samuel Abels',
       author_email     = 'knipknap@gmail.com',
       license          = 'MIT',
       package_dir      = {'receiptparser': 'receiptparser'},
-      package_data     = {},
+      package_data     = {'receiptparser': ['data/configs/*.yml']},
       packages         = find_packages(),
       scripts          = ['scripts/receiptparser'],
       extras_require   = {},
