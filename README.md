@@ -10,6 +10,9 @@
 A receipt and bill parser written in Python.
 Can be used as a Python module or CLI tool.
 
+It was originally based on [receipt-parser](https://github.com/mre/receipt-parser),
+but has effectively been completely rewritten/replaced.
+
 So far, only German receipts are supported, but other countries can
 be added using a simple [YAML configuration file](data/configs/germany.yml).
 
