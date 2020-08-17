@@ -9,8 +9,5 @@ def read_config(filename):
     :return: munch.Munch
     """
     with open(filename, 'r') as fp:
-        try:
-            docs = yaml.safe_load(fp)
-            return munchify(docs)
-        except yaml.YAMLError as e:
-            print(e)
+        docs = yaml.safe_load(fp)
+        return munchify(docs)
