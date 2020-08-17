@@ -71,10 +71,11 @@ optional arguments:
 ## Python usage
 
 ```python
-from receiptparser.config import read_config
+import os
+from receiptparser.config import read_config, CONFIG_DIR
 from receiptparser.parser import process_receipt
 
-config = read_config('my_config.yml')
+config = read_config(os.path.join(CONFIG_DIR, 'german.yml'))
 receipt = process_receipt(config, "my_receipt.jpg", out_dir=None, verbosity=0)
 
 print("Filename:   ", receipt.filename)
