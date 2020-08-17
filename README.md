@@ -60,7 +60,6 @@ optional arguments:
                         built-in config to use
   --config-file CONFIG_FILE
                         like -c, but point to a file instead
-  -s, --sharpen         whether to sharpen the image before OCR
   -t TESSERACT, --tesseract TESSERACT
                         output directory for OCR recognized text (default is to discard)
   -f FORMAT, --format FORMAT
@@ -76,7 +75,7 @@ from receiptparser.config import read_config
 from receiptparser.parser import process_receipt
 
 config = read_config('my_config.yml')
-receipt = process_receipt(config, "my_receipt.jpg", sharpen=False, out_dir=None, verbosity=0)
+receipt = process_receipt(config, "my_receipt.jpg", out_dir=None, verbosity=0)
 
 print("Filename:   ", receipt.filename)
 print("Market:     ", receipt.market)

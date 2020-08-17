@@ -28,6 +28,10 @@ class Receipt(object):
         with codecs.open(filename) as fp:
             return Receipt(config, filename, fp.read())
 
+    def to_dict(self):
+        keys = "filename", "market", "date", "postal", "sum"
+        return dict((k, v) for (k, v) in self.__dict__.items() if k in keys)
+
     def for_format_string(self):
         return {
             'filename': self.filename,
@@ -36,6 +40,14 @@ class Receipt(object):
             'postal': self.postal or 'unknown',
             'sum': '?' if self.sum is None else self.sum,
         }
+
+    def is_complete(self):
+        return not None in self.to_dict().values()
+
+    def merge(self, receipt):
+        for k, v in receipt.to_dict().items():
+            if getattr(self, k) is None:
+                setattr(self, k, v)
 
     def parse(self):
         """

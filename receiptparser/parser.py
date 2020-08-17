@@ -24,18 +24,13 @@ def ocr_image(input_file, language, sharpen=False, timeout=20):
         with Image.open(transfer) as img:
             return pytesseract.image_to_string(img, lang=language, timeout=20)
 
-def process_receipt(config, filename, sharpen=False, out_dir=None, verbosity=0):
-    if filename.endswith('.txt'):
-        if verbosity > 0:
-            print("Parsing existing OCR result", filename)
-        return Receipt.from_file(config, filename)
-
-    if verbosity > 0:
-        print("Performing OCR scan on", filename)
+def _process_receipt(config, filename, out_dir=None, sharpen=False):
     result = ocr_image(filename, config.language, sharpen=sharpen)
 
     if out_dir:
         basename = os.path.basename(filename)
+        if sharpen:
+            basename += '.sharpen'
         out_filename = os.path.join(out_dir, basename+'.txt')
         with codecs.open(out_filename, 'w') as fp:
             fp.write(result)
@@ -43,3 +38,22 @@ def process_receipt(config, filename, sharpen=False, out_dir=None, verbosity=0):
         out_filename = None
 
     return Receipt(config, out_filename or filename, result)
+
+def process_receipt(config, filename, out_dir=None, verbosity=0):
+    if filename.endswith('.txt'):
+        if verbosity > 0:
+            print("Parsing existing OCR result", filename)
+        return Receipt.from_file(config, filename)
+
+    if verbosity > 0:
+        print("Performing scan on", filename)
+    receipt = _process_receipt(config, filename, out_dir)
+
+    if not receipt.is_complete():
+        if verbosity > 0:
+            print("Performing OCR scan with sharpening", filename)
+        receipt2 = _process_receipt(config, filename, sharpen=True)
+        receipt.merge(receipt2)
+
+    return receipt
+

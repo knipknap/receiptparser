@@ -37,8 +37,6 @@ parser.add_argument("-c", "--config", type=str,
 parser.add_argument("--config-file", type=str,
                     dest="config_file",
                     help="like -c, but point to a file instead")
-parser.add_argument("-s", "--sharpen", action="store_true",
-                    help="whether to sharpen the image before OCR")
 parser.add_argument("-t", "--tesseract", type=str,
                     help="output directory for OCR recognized text (default is to discard)")
 parser.add_argument("-f", "--format", type=str,
@@ -78,7 +76,6 @@ for filename in filenames:
     try:
         receipt = process_receipt(config,
                                   filename,
-                                  options.sharpen,
                                   options.tesseract,
                                   options.verbosity)
     except RuntimeError as timeout_error:
