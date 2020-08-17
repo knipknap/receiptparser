@@ -53,34 +53,28 @@ class ReceiptTestCase(unittest.TestCase):
         test_file = os.path.join(TEST_RECEIPTS_TXT_DIR, "sample_text_receipt_dates.txt")
         receipt = Receipt.from_file(self.config, test_file)
 
-        actual_date_str = receipt.date
-        self.assertEqual("19.08.15", actual_date_str)
+        self.assertEqual(str(receipt.date), "2015-08-19 00:00:00")
 
         # test DD.MM.YY
         receipt2 = Receipt(self.config, "test", "18.08.16\n19.09.17\n01.01.18")
-        actual_date_str = receipt2.parse_date()
-        self.assertEqual("18.08.16", actual_date_str)
+        self.assertEqual(str(receipt2.parse_date()), "2016-08-18 00:00:00")
 
         # test DD.MM.YYYY
         receipt3 = Receipt(self.config, "test", "18.08.2016\n")
-        actual_date_str = receipt3.parse_date()
-        self.assertEqual("18.08.2016", actual_date_str)
+        self.assertEqual(str(receipt3.parse_date()), "2016-08-18 00:00:00")
 
         # HOWEVER these tests should fail:
         # test with DD > 31
         receipt4 = Receipt(self.config, "test", "32.08.2016\n")
-        actual_date_str = receipt4.parse_date()
-        self.assertEqual(actual_date_str, None)
+        self.assertEqual(receipt4.parse_date(), None)
 
         # test with MM > 12
         receipt5 = Receipt(self.config, "test", "01.55.2016\n")
-        actual_date_str = receipt5.parse_date()
-        self.assertEqual(actual_date_str, None)
+        self.assertEqual(receipt5.parse_date(), None)
 
         # test with invalid date: 31.04.15
         receipt6 = Receipt(self.config, "test", "31.04.15\n")
-        actual_date_str = receipt6.parse_date()
-        self.assertEqual(actual_date_str, None)
+        self.assertEqual(receipt6.parse_date(), None)
 
         # And these tests should pass:
         # test with YYYY < 2013
