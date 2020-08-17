@@ -1,0 +1,9 @@
+language: python
+python:
+  - "3.8"
+install:
+  - "pip install -r requirements.txt"
+  - "pip install coveralls"
+script: travis_wait coverage run --source=receiptparser -m unittest discover -v tests/test_parser.py
+after_success:
+  coveralls

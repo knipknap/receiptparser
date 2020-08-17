@@ -1,0 +1,11 @@
+__pycache__/
+*.py[co]
+*.egg-info
+*.swp
+*~
+config.xml
+build
+dist
+unit_test.cfg
+.tox
+.coverage

@@ -1,0 +1,103 @@
+#!/bin/env python3
+import os
+import sys
+import argparse
+import codecs
+import pytesseract
+from collections import defaultdict
+from receiptparser.config import read_config
+from receiptparser.util import find_images
+from receiptparser.parser import process_receipt
+
+DIRNAME = os.path.dirname(os.path.abspath(__file__))
+ROOT_DIR = os.path.dirname(DIRNAME)
+DATA_DIR = os.path.join(ROOT_DIR, 'data')
+CONFIGS_DIR = os.path.join(DATA_DIR, 'configs')
+
+def print_stats(receipts, verbosity=2):
+    stats = defaultdict(int)
+
+    for receipt in receipts:
+        stats["market"] += 1 if receipt.market else 0
+        stats["postal"] += 1 if receipt.postal else 0
+        stats["date"] += 1 if receipt.date else 0
+        stats["sum"] += 1 if receipt.sum else 0
+
+    if verbosity > 0:
+        print("Summary:")
+        print("  Total:            ", len(receipts))
+        print("  Market found:     ", stats["market"])
+        print("  Postal code found:", stats["postal"])
+        print("  Date found:       ", stats["date"])
+        print("  Amount found:     ", stats["sum"])
+
+    return stats
+
+parser = argparse.ArgumentParser()
+parser.add_argument("input", help="file or directory from which images will be read")
+parser.add_argument("-c", "--config", type=str,
+                    default="germany",
+                    help="built-in config to use")
+parser.add_argument("--config-file", type=str,
+                    dest="config_file",
+                    help="like -c, but point to a file instead")
+parser.add_argument("-s", "--sharpen", action="store_true",
+                    help="whether to sharpen the image before OCR")
+parser.add_argument("-t", "--tesseract", type=str,
+                    help="output directory for OCR recognized text (default is to discard)")
+parser.add_argument("-f", "--format", type=str,
+                    help="format of the recognized output. default is pretty-printing")
+parser.add_argument("-v", "--verbosity", type=int, choices=[0, 1, 2],
+                    default=1,
+                    help="increase output verbosity")
+options = parser.parse_args()
+
+# Read the config file.
+if not options.config_file:
+    options.config_file = os.path.join(CONFIGS_DIR, options.config+'.yml')
+if not os.path.isfile(options.config_file):
+    parser.error("config file not found: "+options.config_file)
+
+# Read the input file(s).
+if not os.path.exists(options.input):
+    parser.error("input file not found: "+options.input)
+if os.path.isfile(options.input):
+    filenames = [options.input]
+else:
+    filenames = list(find_images(options.input))
+
+# Make sure that the output dir exists.
+if options.tesseract and not os.path.isdir(options.tesseract):
+    parser.error("output dir not found or not a dir: "+options.tesseract)
+
+
+config = read_config(options.config_file)
+
+# Run OCR on all images.
+if options.verbosity > 0:
+    print("Processing {} receipts from {}".format(len(filenames), options.input))
+
+receipts = []
+for filename in filenames:
+    try:
+        receipt = process_receipt(config,
+                                  filename,
+                                  options.sharpen,
+                                  options.tesseract,
+                                  options.verbosity)
+    except RuntimeError as timeout_error:
+        sys.stderr.write('Skipping {}, as it took too long to process'.format(filename))
+        continue
+
+    if options.verbosity > 1:
+        print("  Market:     ", receipt.market)
+        print("  Postal code:", receipt.postal)
+        print("  Date:       ", receipt.date)
+        print("  Amount:     ", receipt.sum)
+
+    print(options.format.format(**receipt.for_format_string()))
+
+    receipts.append(receipt)
+
+# Print statistics
+print_stats(receipts, options.verbosity)

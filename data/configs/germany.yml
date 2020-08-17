@@ -1,0 +1,75 @@
+language: deu # As accepted by pytesseract, e.g. "eng+deu"
+
+# Can contain market locations for fuzzy parsing
+markets:
+  Aldi:
+    - aldi
+  Bauhaus:
+    - bauhaus
+  Colruyt:
+    - colruyt
+  Delhaize:
+    - delhaize
+  Deutsche Post:
+    - deutsche post
+  Drogerie:
+    - drogerie
+  Edeka:
+   - edeka
+  Getraenke:
+    - Getraenke Tempel
+  Hit Markt:
+    - hit
+  Kaiser's:
+    - kaiser
+  Kaufland:
+    - kaufland
+    - kauf land
+  Kodi:
+    - kodi
+  Lidl:
+    - lidl
+  Marktkauf:
+    - marktkauf
+  Migros:
+    - genossenschaft migros
+  Netto:
+    - netto-online
+  Penny:
+    - penny
+    - p e n n y
+    - m a r k t gmbh
+  REWE:
+    - rewe
+  Real:
+    - real
+  SuperBioMarkt:
+    - SuperBioMarkt
+  Tanken:
+    - shell
+    - esso
+    - aral
+    - avia
+    - tankstelle
+    - zapfpunkt
+    - zapfstelle
+    - zapfsäule
+
+# Sum keys roughly ordered by likelyhood.
+sum_keys:
+  - summe
+  - gesamtbetrag
+  - gesamt
+  - total
+  - sum
+  - zwischensumme
+  - bar
+  - te betalen
+
+formats:
+  sum: '\d+(\.\s?|,\s?|[^a-zA-Z\d])\d{2}'
+
+  # Matches dates like 19.08.15 and 19. 08. 2015
+  date: '\b([0123]?\d\s?\.\s?[01]?\d\s?\.\s?(?:20)?\d\d)\b'
+
+  postal_code: '\b(\d{5})\s+[a-z]'

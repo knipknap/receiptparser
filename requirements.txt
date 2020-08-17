@@ -1,0 +1,3 @@
+wand==0.6.2
+pytesseract==0.3.5
+munch==2.5.0
