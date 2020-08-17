@@ -4,6 +4,6 @@ python:
 install:
   - "pip install -r requirements.txt"
   - "pip install coveralls"
-script: travis_wait coverage run --source=receiptparser -m unittest discover -v tests/test_parser.py
+script: travis_wait coverage run --source=receiptparser -m unittest discover -v tests "test_*.py"
 after_success:
   coveralls
