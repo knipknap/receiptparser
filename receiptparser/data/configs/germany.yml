@@ -1,7 +1,7 @@
 language: deu # As accepted by pytesseract, e.g. "eng+deu"
 
-# Can contain market locations for fuzzy parsing
-markets:
+# Can contain company locations for fuzzy parsing
+companys:
   Aldi:
     - aldi
   Bauhaus:

@@ -84,51 +84,51 @@ class ReceiptTestCase(unittest.TestCase):
         receipt8 = Receipt(self.config, "test", "18.08.2017\n")
         actual_date_str = receipt8.parse_date()
 
-    def test_parse_market(self):
+    def test_parse_company(self):
         """
-            Verifies parser.parse_market
+            Verifies parser.parse_company
         """
         receipt = Receipt(self.config, "test", "penny")
-        self.assertEqual("Penny", receipt.parse_market())
+        self.assertEqual("Penny", receipt.parse_company())
 
         receipt = Receipt(self.config, "test", "p e n n y")
-        self.assertEqual("Penny", receipt.parse_market())
+        self.assertEqual("Penny", receipt.parse_company())
 
         receipt = Receipt(self.config, "test", "m a r k t gmbh")
-        self.assertEqual("Penny", receipt.parse_market())
+        self.assertEqual("Penny", receipt.parse_company())
 
         receipt = Receipt(self.config, "test", "rew")
-        self.assertEqual("REWE", receipt.parse_market())
+        self.assertEqual("REWE", receipt.parse_company())
 
         receipt = Receipt(self.config, "test", "REL")
-        self.assertEqual("Real", receipt.parse_market())
+        self.assertEqual("Real", receipt.parse_company())
 
         receipt = Receipt(self.config, "test", "netto-onli")
-        self.assertEqual("Netto", receipt.parse_market())
+        self.assertEqual("Netto", receipt.parse_company())
 
         receipt = Receipt(self.config, "test", "kaser")
-        self.assertEqual("Kaiser's", receipt.parse_market())
+        self.assertEqual("Kaiser's", receipt.parse_company())
 
         receipt = Receipt(self.config, "test", "ALDI")
-        self.assertEqual("Aldi", receipt.parse_market())
+        self.assertEqual("Aldi", receipt.parse_company())
 
         receipt = Receipt(self.config, "test", "LIDL")
-        self.assertEqual("Lidl", receipt.parse_market())
+        self.assertEqual("Lidl", receipt.parse_company())
 
         receipt = Receipt(self.config, "test", "shell")
-        self.assertEqual("Tanken", receipt.parse_market())
+        self.assertEqual("Tanken", receipt.parse_company())
 
         receipt = Receipt(self.config, "test", "esso station")
-        self.assertEqual("Tanken", receipt.parse_market())
+        self.assertEqual("Tanken", receipt.parse_company())
 
         receipt = Receipt(self.config, "test", "aral")
-        self.assertEqual("Tanken", receipt.parse_market())
+        self.assertEqual("Tanken", receipt.parse_company())
 
         receipt = Receipt(self.config, "test", "total tankstelle")
-        self.assertEqual("Tanken", receipt.parse_market())
+        self.assertEqual("Tanken", receipt.parse_company())
 
         receipt = Receipt(self.config, "test", "RK Tankstellen")
-        self.assertEqual("Tanken", receipt.parse_market())
+        self.assertEqual("Tanken", receipt.parse_company())
 
     def test_parse_sum(self):
         """

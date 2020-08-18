@@ -14,7 +14,7 @@ def print_stats(receipts, verbosity=2):
     stats = defaultdict(int)
 
     for receipt in receipts:
-        stats["market"] += 1 if receipt.market else 0
+        stats["company"] += 1 if receipt.company else 0
         stats["postal"] += 1 if receipt.postal else 0
         stats["date"] += 1 if receipt.date else 0
         stats["sum"] += 1 if receipt.sum else 0
@@ -22,7 +22,7 @@ def print_stats(receipts, verbosity=2):
     if verbosity > 0:
         print("Summary:")
         print("  Total:            ", len(receipts))
-        print("  Market found:     ", stats["market"])
+        print("  Company found:    ", stats["company"])
         print("  Postal code found:", stats["postal"])
         print("  Date found:       ", stats["date"])
         print("  Amount found:     ", stats["sum"])
@@ -83,7 +83,7 @@ for filename in filenames:
         continue
 
     if options.verbosity > 1:
-        print("  Market:     ", receipt.market)
+        print("  Company:    ", receipt.company)
         print("  Postal code:", receipt.postal)
         print("  Date:       ", receipt.date)
         print("  Amount:     ", receipt.sum)

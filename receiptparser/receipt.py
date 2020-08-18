@@ -16,7 +16,7 @@ class Receipt(object):
         """
         self.config = config
         self.filename = filename
-        self.market = None
+        self.company = None
         self.date = None
         self.postal = None
         self.sum = None
@@ -29,13 +29,13 @@ class Receipt(object):
             return Receipt(config, filename, fp.read())
 
     def to_dict(self):
-        keys = "filename", "market", "date", "postal", "sum"
+        keys = "filename", "company", "date", "postal", "sum"
         return dict((k, v) for (k, v) in self.__dict__.items() if k in keys)
 
     def for_format_string(self):
         return {
             'filename': self.filename,
-            'market': self.market or 'unknown',
+            'company': self.company or 'unknown',
             'date': self.date or datetime.date(1970, 1, 1),
             'postal': self.postal or 'unknown',
             'sum': '?' if self.sum is None else self.sum,
@@ -55,7 +55,7 @@ class Receipt(object):
             Parses obj data
         """
 
-        self.market = self.parse_market()
+        self.company = self.parse_company()
         self.postal = self.parse_postal()
         self.date = self.parse_date()
         self.sum = self.parse_sum()
@@ -108,18 +108,18 @@ class Receipt(object):
                     continue
                 return match.group(1)
 
-    def parse_market(self):
+    def parse_company(self):
         """
         :return: str
         """
 
         for int_accuracy in range(10, 6, -1):
             accuracy = int_accuracy/10.0
-            for market, spellings in self.config.markets.items():
+            for company, spellings in self.config.companys.items():
                 for spelling in spellings:
                     line = self.fuzzy_find(spelling, accuracy)
                     if line:
-                        return market
+                        return company
 
     def parse_sum(self):
         """
