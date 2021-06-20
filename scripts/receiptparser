@@ -5,6 +5,7 @@ import argparse
 import codecs
 import pytesseract
 from collections import defaultdict
+from pprint import pprint
 import receiptparser
 from receiptparser.config import read_config, CONFIG_DIR
 from receiptparser.util import find_images
@@ -88,7 +89,10 @@ for filename in filenames:
         print("  Date:       ", receipt.date)
         print("  Amount:     ", receipt.sum)
 
-    print(options.format.format(**receipt.for_format_string()))
+    if options.format is not None:
+        print(options.format.format(**receipt.for_format_string()))
+    else:
+        pprint(receipt.to_dict())
 
     receipts.append(receipt)
 
